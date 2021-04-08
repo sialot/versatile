@@ -1,0 +1,23 @@
+{
+  "name": "versatile",
+  "version": "1.0.0",
+  "description": "可能做不完的模板编辑器",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ./src/main/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sialot/versatile.git"
+  },
+  "author": "sialot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sialot/versatile/issues"
+  },
+  "homepage": "https://github.com/sialot/versatile#readme",
+  "devDependencies": {
+    "electron": "^12.0.2"
+  }
+}

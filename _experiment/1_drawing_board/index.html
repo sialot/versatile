@@ -1,0 +1,107 @@
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>The drawing board</title>
+	<style>
+		body{
+			background-color: #252526;
+			margin:0px;
+		}
+		.header{
+			background-color: #323233;
+		}
+		.pannel_tool{
+			margin:0px;
+			background-color: #333333;
+			padding: 8px;
+		}
+        .pannel_box{
+			display: inline-block;
+			background-color: #555;
+			padding:4px;
+			color:#ccc
+        }
+		#main_container{
+			padding:20px;
+		}
+		.view_size{
+			width:1280px;
+			height:720px;
+		}
+
+		.canvas_size{
+			width:12800px;
+			height:7200px;
+		}
+
+		.canvas_grid{
+			background-color: #888;
+		}
+        
+	</style> 
+	<script>
+
+		// 展示宽高
+		var G_VIEW_HEIGHT = 720;
+		var G_VIEW_WEIGHT = 1280;
+
+		// 放大倍数
+		var gain = 1.0;
+
+		// canvas_grid elem
+		var canvas_elem
+
+		// 绘图工具		
+		var CANVAS_TOOL = function(){
+
+			this.drawDashLine = function(cxt, startX, startY, endX, endY, dashLength){
+				cxt.lineWidth = 1;
+				cxt.strokeStyle = '#fefefe';
+				cxt.beginPath();
+				cxt.setLineDash([dashLength, 4 , 1 , 4]);
+				cxt.moveTo(startX, startY);
+				cxt.lineTo(endX, endY);
+				cxt.stroke();
+			}
+
+			this.drawBlock = function(cxt, startX, startY, endX, endY){
+				ctx.rect(20,20,150,100);
+				ctx.stroke();
+			}
+		}
+
+		
+
+		function _draw_grid(){
+			canvas_elem = document.getElementById("drawing_grid");
+			var cxt = canvas_elem.getContext("2d");
+			var t = new CANVAS_TOOL()
+			t.drawDashLine(cxt, 20, 50, 500, 50, 5)
+
+		　  cxt.strokeStyle = '#fff';
+			ctx.rect(20,20,150,100);
+			ctx.stroke();
+
+
+
+		}
+
+
+
+
+
+	</script>
+	</head>
+	<body onload="_draw_grid()">
+		<div class="pannel_tool">
+			<div class="pannel_box">480P</div>
+			<div class="pannel_box">720P</div>
+			<div class="pannel_box">destory</div>
+		</div>
+        <div id="main_container">
+			<div id="board" class="board_drawing view_size">
+				<canvas id="drawing_grid" class="canvas_grid canvas_size"  width="1920" height="1080"></canvas>     
+			</div>			       
+        </div>
+	</body>
+</html>
