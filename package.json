@@ -1,11 +1,13 @@
 {
   "name": "versatile",
   "version": "1.0.0",
-  "description": "可能做不完的模板编辑器",
+  "description": "a visual epg template designer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ./src/main/main.js"
+    "build-main": "cross-env NODE_ENV=production webpack --config webpack.main.prod.config.js",
+    "build-renderer": "cross-env NODE_ENV=production webpack --config webpack.renderer.prod.config.js",
+    "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
+    "start-main": "electron ./dist/main/main.prod.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,14 @@
   },
   "homepage": "https://github.com/sialot/versatile#readme",
   "devDependencies": {
-    "electron": "^12.0.2"
+    "concurrently": "^6.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^12.0.2",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3",
+    "webpack-node-externals": "^2.5.2"
   }
 }
