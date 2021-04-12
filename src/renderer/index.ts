@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import router from './router';
-import App from './App';
+import App from './App.vue';
 const isProd = process.env.NODE_ENV === 'production';
 Vue.config.productionTip = isProd;
 

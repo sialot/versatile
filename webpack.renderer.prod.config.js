@@ -24,7 +24,7 @@ const cssConfig = [
 
 module.exports = merge(webpackBaseConfig, {
   entry: {
-    index: './src/renderer/index.js' // 入口文件
+    index: './src/renderer/index.ts' // 入口文件
   }, 
   mode: 'production',
   target: 'electron-preload',  

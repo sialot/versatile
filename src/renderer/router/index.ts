@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Demo from '../Demo';
+import Demo from '../Demo/index.vue';
 Vue.use(VueRouter);
 export default new VueRouter({
     routes: [
