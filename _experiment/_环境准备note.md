@@ -92,13 +92,13 @@ project
 
 ## 二、安装 typescript
 
-#### 安装命令
+### 1、安装命令
 
 ```bash
 npm install --save-dev typescript
 ```
 
-#### 配置文件
+### 2、配置文件
 
 新建文件 tsconfig.json
 
@@ -139,29 +139,29 @@ npm install --save-dev typescript
 
 ```
 
-#### 配置文件详解
+### 3、配置文件详解
 
 https://www.cnblogs.com/cczlovexw/p/11527708.html
 
 
 
-### 三、WebPack安装
+## 三、WebPack安装
 
 https://webpack.docschina.org/
 
 
 
-#### WebPack项目打包流程示意图![img](https://user-gold-cdn.xitu.io/2020/7/2/1730d1b6e95392f7?w=1578&h=992&f=png&s=120682)
+### 1、WebPack项目打包流程示意图![img](https://user-gold-cdn.xitu.io/2020/7/2/1730d1b6e95392f7?w=1578&h=992&f=png&s=120682)
 
-#### 安装webpack
+### 2、安装webpack
 
-##### 1.webpack本身
+#### webpack本身
 
 ```bash
 npm install --save-dev webpack webpack-cli webpack-merge
 ```
 
-##### 2.安装webpack-node-externals
+#### 安装webpack-node-externals
 
 主进程打包时只需要将src/main下的所有ts文件打包到dist/main下，值得注意的是，主进程对应的是node工程，如果直接使用webpack进行打包会将node_modules中的模块也打包进去，所以这里使用webpack-node-externals插件去排除node_modules模块
 
@@ -169,7 +169,7 @@ npm install --save-dev webpack webpack-cli webpack-merge
 npm install --save-dev webpack-node-externals
 ```
 
-##### 3. 为支持typescript，安装ts-loader
+#### 为支持typescript，安装ts-loader
 
 `css-loader`、`sass-loader`、`style-loader`处理样式，`url-loader`、`file-loader`处理图片和字体，[resolve-url-loader](https://www.npmjs.com/package/resolve-url-loader)处理scss文件`url()`中的相对路径问题
 
@@ -177,7 +177,7 @@ npm install --save-dev webpack-node-externals
 npm install ts-loader --save-dev
 ```
 
-##### 4.配置基础配置文件
+#### 配置基础配置文件
 
 webpack.base.config.js
 
@@ -210,11 +210,9 @@ module.exports = {
 
 
 
-### 四、主进程webpack打包配置
+## 四、主进程webpack打包配置
 
-
-
-#### 配置文件
+### 1、配置文件
 
 开发模式下对应的webpack配置webpack.main.dev.config.js如下
 
@@ -271,7 +269,7 @@ module.exports = merge(webpackDevConfig, {
 
 
 
-#### 添加运行命令
+### 2、添加运行命令
 
 到此为止，已经完成了主进程的打包配置，这里可以直接测试项目生产环境的打包结果。
 
@@ -296,7 +294,7 @@ npm install --save-dev cross-env concurrently
 
 
 
-#### 测试
+### 3、测试
 
 添加 src/index.ts
 
@@ -349,11 +347,11 @@ npm run build-main
 
 
 
-### 五、渲染进程webpack打包配置（静态HTML）
+## 五、渲染进程webpack打包配置（静态HTML）
 
 
 
-#### 插件安装
+### 1、插件安装
 
 先来看生产模式下的打包，安装相应的插件和loader，这里使用[html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin)插件去生成html模版，而且需要对每一个页面生成一个.html文件
 
@@ -371,7 +369,7 @@ npm install --save-dev mini-css-extract-plugin html-webpack-plugin
 
 
 
-#### 配置文件
+### 2、配置文件
 
 webpack.renderer.prod.config.js
 
@@ -557,7 +555,7 @@ showHelloWorld();
 
 
 
-#### 添加运行命令
+### 3、添加运行命令
 
 到此为止，已经完成了主进程的打包配置，这里可以直接测试项目生产环境的打包结果。
 
@@ -579,7 +577,7 @@ showHelloWorld();
 
 
 
-#### 测试
+### 4、测试
 
 使用`build-renderer`命令并行打包主进程代码
 
@@ -589,9 +587,9 @@ npm run build-renderer
 
 
 
-### 六、启动应用
+## 六、启动应用
 
-#### 添加运行命令
+### 1、添加运行命令
 
 到此为止，已经完成了主进程的打包配置，这里可以直接测试项目生产环境的打包结果。
 
@@ -610,7 +608,7 @@ npm run build-renderer
 }
 ```
 
-#### 运行
+### 2、运行
 
 ```shell
 npm run start-main
@@ -618,22 +616,22 @@ npm run start-main
 
 
 
-### 七、整合VUE
+## 七、整合VUE
 
-#### vue安装
+### 1、vue安装
 
 ```shell
 npm install vue vue-router --save-dev
 ```
 
-#### vue-loader vue-template-compiler
+### 2、vue-loader vue-template-compiler
 
 ```shell
 npm install vue-loader vue-template-compiler --save-dev
 npm install --save-dev clean-webpack-plugin
 ```
 
-#### 修改配置文件
+### 3、修改配置文件
 
 webpack.base.config.js 添加 vue解析
 
@@ -678,7 +676,7 @@ const cssConfig = [
 
 module.exports = merge(webpackBaseConfig, {
   entry: {
-    index: './src/renderer/index.js' // 入口文件
+    index: './src/renderer/index.ts' // 入口文件
   }, 
   mode: 'production',
   target: 'electron-preload',  
@@ -856,3 +854,23 @@ module.exports = merge(webpackBaseConfig, {
 
 ```
 
+## 八、配置VUE，支持typescript
+
+### 1、添加vuevue-shims.d.ts
+
+在src/renderer/ 下，添加vue-shims.d.ts，使ts识别vue文件
+
+```typescript
+declare module '*.vue' {
+    import Vue from 'vue'
+    export default Vue
+}
+```
+
+### 2、修改vue引入方式
+
+```typescript
+import App from './App.vue';
+```
+
+## 九、开发模式配置
