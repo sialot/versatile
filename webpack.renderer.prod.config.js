@@ -9,18 +9,7 @@ const { merge } = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config');
 
 const { VueLoaderPlugin } = require('vue-loader'); // vue加载器
-const port = 3002;
 const isProd = process.env.NODE_ENV === 'production';
-
-const cssConfig = [
-  isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-  {
-      loader: 'css-loader',
-      options: {
-          sourceMap: !isProd
-      }
-  }
-];
 
 module.exports = merge(webpackBaseConfig, {
   entry: {
@@ -43,7 +32,7 @@ module.exports = merge(webpackBaseConfig, {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
-                        css: cssConfig
+                        css: MiniCssExtractPlugin.loader
                     },
                     preserveWhitespace: false // 不要留空白
                 }
