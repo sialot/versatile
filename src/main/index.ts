@@ -4,7 +4,7 @@ import path from "path";
 // 加载html，目前只对生产模式进行加载
 function loadHtml(window: BrowserWindow, name: string) {
   if (process.env.NODE_ENV === 'production') {
-    window.loadFile(path.resolve(__dirname, `../renderer/${name}/index.html`)).catch(console.error);
+    window.loadFile(path.resolve(__dirname, `../renderer/index.html`)).catch(console.error);
     return;
   }
   // TODO development
@@ -19,7 +19,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true
     },
-    backgroundColor: '#252526',
+    //backgroundColor: '#252526',
     minWidth: 450,
     minHeight: 350,
     width: 450,

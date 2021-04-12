@@ -13,7 +13,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.json', '.ts'],
+    extensions: ['.js', '.json', '.ts','.vue','.styl'],
     alias: {
       '~native': path.resolve(__dirname, 'native'), // 别名，方便import
       '~resources': path.resolve(__dirname, 'resources') // 别名，方便import      

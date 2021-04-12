@@ -1,35 +1,56 @@
 // 渲染进程prod环境webpack配置
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { resolve, join } = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // 自动生成index.html
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // 文本分离插件，分离js和css
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 清理垃圾文件
+
 const { merge } = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config');
 
-const entry = {
-  index: path.join(__dirname, 'src/renderer/index/index.ts'), // 页面入口
-};
-// 对每一个入口生成一个.html文件
-const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
-  inject: 'body',
-  scriptLoading: 'defer',
-  template: path.join(__dirname, 'resources/template/template.html'), // template.html是一个很简单的html模版
-  minify: false,
-  filename: `${name}/index.html`,
-  chunks: [name]
-}));
+const { VueLoaderPlugin } = require('vue-loader'); // vue加载器
+const port = 3002;
+const isProd = process.env.NODE_ENV === 'production';
+
+const cssConfig = [
+  isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+  {
+      loader: 'css-loader',
+      options: {
+          sourceMap: !isProd
+      }
+  }
+];
 
 module.exports = merge(webpackBaseConfig, {
+  entry: {
+    index: './src/renderer/index.js' // 入口文件
+  }, 
   mode: 'production',
-  target: 'electron-preload',
-  entry,
+  target: 'electron-preload',  
   output: {
-    path: path.join(__dirname, 'dist/renderer/'),
-    publicPath: '../',
-    filename: '[name]/index.prod.js' // 输出则是每一个入口对应一个文件夹
+    path: resolve(__dirname, 'dist/renderer/'),
+    filename: isProd ? 'javascript/[name].[contenthash:5].js' : '[name].js', // [name] 是entry的key
+    publicPath: isProd ? './' : '/'
   },  
   module: { 
     rules: [ 
+
+      {
+        test: /\.vue$/,
+        use: [
+            {
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        css: cssConfig
+                    },
+                    preserveWhitespace: false // 不要留空白
+                }
+            }
+        ],
+        include: [resolve(__dirname, 'src')]
+      },
 
       // 处理全局.css文件
       {
@@ -154,12 +175,27 @@ module.exports = merge(webpackBaseConfig, {
     ]
   },
   plugins: [
+    new VueLoaderPlugin(), // vue加载器
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production'
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name]/index.style.css'
+    new MiniCssExtractPlugin({ // 分离css
+      filename: 'stylesheets/[name].[contenthash:5].css'
     }),
-    ...htmlWebpackPlugin
+    new HtmlWebpackPlugin({
+      template: join(__dirname, 'src/renderer/index.html'), // 引入模版
+      filename: 'index.html',
+      minify: { // 对index.html压缩
+          collapseWhitespace: isProd, // 去掉index.html的空格
+          removeAttributeQuotes: isProd // 去掉引号
+      },
+      hash: true, // 去掉上次浏览器的缓存（使浏览器每次获取到的是最新的html）
+      inlineSource: '.(js|css)'
+    }),
+    new CleanWebpackPlugin({
+      verbose: true, // 打印被删除的文件
+      protectWebpackAssets: false, // 允许删除cleanOnceBeforeBuildPatterns中的文件
+      cleanOnceBeforeBuildPatterns: ['**/*', resolve(__dirname, 'dist/renderer')]
+    })
   ]
 });

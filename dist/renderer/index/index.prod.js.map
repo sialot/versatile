@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://versatile/./src/renderer/index/index.ts"],"names":["document","body","innerHTML"],"mappings":"mBACIA,SAASC,KAAKC,UAAY,mB","file":"index/index.prod.js","sourcesContent":["function showHelloWorld(){\r\n    document.body.innerHTML = \"Hello Wolrd !!!\"\r\n}\r\nshowHelloWorld();"],"sourceRoot":""}
