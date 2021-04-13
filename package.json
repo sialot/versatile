@@ -2,7 +2,48 @@
   "name": "versatile",
   "version": "1.0.0",
   "description": "a visual epg template designer",
-  "main": "index.js",
+  "main": "./dist/main/main.prod.js",
+  "build": {
+    "productName": "Versatile",
+    "appId": "com.sialot.versatile",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "resources/",      
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dmg",
+      "icon": "./resources/icons/app.icns"
+    },
+    "dmg": {
+      "backgroundColor": "#ffffff",
+      "icon": "./resources/icons/app.icns",
+      "iconSize": 80,
+      "title": "Versatile"
+    },
+    "win": {
+      "target": [ "nsis" ],
+      "icon": "./resources/icons/app.ico"
+    },
+    "linux": {
+      "icon": "./resources/icons/app.png",
+      "target": [ "deb", "rpm", "AppImage" ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "./resources/icons",
+      "output": "release"
+    },
+    "nsis": {
+      "oneClick": false, 
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,     
+      "createDesktopShortcut": true,
+      "shortcutName": "Versatile"
+    }
+  },
   "scripts": {
     "build-main": "cross-env NODE_ENV=production webpack --config webpack.main.prod.config.js",
     "build-renderer": "cross-env NODE_ENV=production webpack --config webpack.renderer.prod.config.js",
@@ -10,7 +51,10 @@
     "start-main": "electron ./dist/main/main.prod.js",
     "dev-main": "cross-env NODE_ENV=development webpack --config webpack.main.dev.config.js && electron ./dist/main/main.dev.js",
     "dev-renderer": "cross-env NODE_ENV=development webpack-dev-server --config webpack.renderer.dev.config.js",
-    "dev": "npm run dev-renderer"
+    "dev": "npm run dev-renderer",
+    "package": "npm run build && electron-builder build --publish never",
+    "package-win": "npm run build && electron-builder build --win --x64",    
+    "package-mac": "npm run build && electron-builder build --mac" 
   },
   "repository": {
     "type": "git",
@@ -28,6 +72,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.1",
     "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "mini-css-extract-plugin": "^1.4.1",

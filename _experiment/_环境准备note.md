@@ -6,33 +6,37 @@ nodejs v10.16.3
 
 npm 6.11.3
 
-electron@12.0.2
+```json
+"devDependencies": {
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "concurrently": "^6.0.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.1",
+    "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.1",
+    "node-sass": "^5.0.0",
+    "resolve-url-loader": "^3.1.2",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "url-loader": "^4.1.1",
+    "vue": "^2.6.12",
+    "vue-loader": "^15.9.6",
+    "vue-router": "^3.5.1",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3",
+    "webpack-node-externals": "^2.5.2"
+  }
+```
 
-typescript@4.2.4
 
-webpack-merge@5.7.3
-webpack-cli@4.6.0
-webpack@5.31.2
-
-webpack-node-externals@2.5.2
-
-ts-loader@8.1.0
-
-sass-loader@11.0.1
-style-loader@2.0.0
-url-loader@4.1.1
-resolve-url-loader@3.1.2
-file-loader@6.2.0
-css-loader@5.2.1
-
-node-sass@5.0.0
-
- mini-css-extract-plugin@1.4.1
- html-webpack-plugin@5.3.1
-
-vue@2.6.12
-
-vue-loader@15.9.6
 
 ## 一、Electron安装
 
@@ -1120,5 +1124,97 @@ module.exports = merge(webpackBaseConfig, {
 "dev-main": "cross-env NODE_ENV=development webpack --config webpack.main.dev.config.js && electron ./dist/main/main.dev.js",
     "dev-renderer": "cross-env NODE_ENV=development webpack-dev-server --config webpack.renderer.dev.config.js",
     "dev": "npm run dev-renderer"
+```
+
+### 5、修改主进程代码支持开发模式
+
+```typescript
+// 加载html，目前只对生产模式进行加载
+function loadHtml(window: BrowserWindow, name: string) {
+  if (process.env.NODE_ENV === 'production') {
+    window.loadFile(path.resolve(__dirname, `../renderer/index.html`)).catch(console.error);
+    return;
+  }
+  // 开发模式
+  window.loadURL(`http://localhost:9999/dist/renderer/${name}.html`).catch(console.error);
+}
+```
+
+## 十、使用Electron-builder构建应用
+
+### 1、安装
+
+[Electron-builder](https://www.electron.build/)可以理解为一个黑盒子，能够解决Electron项目的各个平台（Mac、Window、Linux）打包和构建并且提供自动更新支持。安装如下，需要注意electron-builder只能安装到`devDependencies`下
+
+```shell
+npm install --save-dev electron-builder
+```
+
+### 2、添加脚本
+
+然后在`package.json`中添加build字段，build字段配置参考：[build字段通用配置](https://www.electron.build/configuration/configuration)
+
+```json
+{
+  ...,
+  "build": {
+    "productName": "Electron App",
+    "appId": "electron.app",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "resources/",
+      "native/",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dmg",
+      "icon": "./resources/icons/app.icns"
+    },
+    "dmg": {
+      "backgroundColor": "#ffffff",
+      "icon": "./resources/icons/app.icns",
+      "iconSize": 80,
+      "title": "Electron App"
+    },
+    "win": {
+      "target": [ "nsis", "msi" ]
+    },
+    "linux": {
+      "icon": "./resources/icons/app.png",
+      "target": [ "deb", "rpm", "AppImage" ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "./resources/icons",
+      "output": "release"
+    },
+    "nsis": {
+      "oneClick": false, 
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,     
+      "createDesktopShortcut": true,
+      "shortcutName": "Versatile"
+    }
+  },
+  ...
+}
+
+```
+
+并向`package.json`中添加运行命令，`package`打包多个平台，`package-mac`构建Mac平台包，`package-win`构建window平台包，`package-linux`构建linux平台包
+
+```
+{
+  ...,
+  "script": {
+    "package": "npm run build && electron-builder build --publish never",
+    "package-win": "npm run build && electron-builder build --win --x64",
+    "package-linux": "npm run build && electron-builder build --linux",
+    "package-mac": "npm run build && electron-builder build --mac" 
+   }
+  ...
+}
 ```
 
