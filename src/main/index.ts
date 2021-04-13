@@ -1,4 +1,4 @@
-import { BrowserWindow, app } from 'electron';
+import { BrowserWindow, app, ipcMain} from 'electron';
 import path from "path";
 
 // 加载html，目前只对生产模式进行加载
@@ -20,19 +20,44 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true
     },
-    //backgroundColor: '#252526',
     minWidth: 450,
     minHeight: 350,
     width: 1280,
     height: 720,
+    useContentSize: true,
     frame: false
   });
   loadHtml(mainWindow, 'index');
   mainWindow.on('close', () => mainWindow = null);
   mainWindow.webContents.on('crashed', () => console.error('crash'));
-  //mainWindow.webContents.openDevTools({mode:'detach'});
 }
-app.on('ready', () => { createMainWindow() });
+
+// 初始化ui组件
+function initUI() {
+
+  ipcMain.on('close-app', () => {
+    if (mainWindow) {
+      mainWindow.close()
+    }
+  })
+
+  ipcMain.on('min-app', () => {
+    if (mainWindow) {
+      mainWindow.minimize()
+    }
+  })
+
+  ipcMain.on('max-app', () => {
+    if (mainWindow) {
+      mainWindow.maximize()
+    }
+  })
+}
+
+app.on('ready', () => { 
+  createMainWindow();
+  initUI();
+});
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
