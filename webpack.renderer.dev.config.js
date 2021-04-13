@@ -52,7 +52,7 @@ module.exports = merge(webpackBaseConfig, {
     }
   },
   entry: {
-    index: './src/renderer/index.ts' // 入口文件
+    index: './src/renderer/app.ts' // 入口文件
   }, 
   mode: 'development',
   target: 'web',   
@@ -76,73 +76,62 @@ module.exports = merge(webpackBaseConfig, {
         include: [resolve(__dirname, 'src')]
       },
 
-      // 处理全局.css文件
-      {
+      // 处理全局css样式
+      { 
         test: /\.global\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: { publicPath: './' }
-          },
+          {loader: 'style-loader'},
           {
             loader: 'css-loader',
-            options: { sourceMap: true }
-          },
-          {loader: 'resolve-url-loader'}, // 解决样式文件中的相对路径问题
-        ]
-      },
-
-      // 一般样式文件，使用css模块
-      {
-        test: /^((?!\.global).)*\.css$/,
-        use: [
-          { loader: MiniCssExtractPlugin.loader },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: { localIdentName: '[name]__[local]__[hash:base64:5]' },
-              sourceMap: true
-            }
+            options: {sourceMap: true}
           },
           {loader: 'resolve-url-loader'},
         ]
       },
-
-      // 处理scss全局样式
+      // 处理css样式，使用css模块
+      { 
+        test: /^((?!\.global).)*\.css$/,
+        use: [
+          {loader: 'style-loader'},
+          {
+            loader: 'css-loader',
+            options: {
+              modules: { localIdentName: '[name]__[local]__[hash:base64:5]' },
+              sourceMap: true,
+              importLoaders: 1
+            }
+          },
+          {loader: 'resolve-url-loader'}
+        ]
+      },
+      // 处理全局scss样式
       {
         test: /\.global\.(scss|sass)$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
+          {loader: 'style-loader'},
           {
             loader: 'css-loader',
-            options: { sourceMap: true, importLoaders: 1 }
+            options: {sourceMap: true}
           },
           {loader: 'resolve-url-loader'},
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true }
-          }
+          {loader: 'sass-loader'}
         ]
       },
-
-      // 处理一般sass样式，依然使用css模块
+      // 处理scss样式，使用css模块
       {
         test: /^((?!\.global).)*\.(scss|sass)$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
+          {loader: 'style-loader'},
           {
             loader: 'css-loader',
             options: {
               modules: { localIdentName: '[name]__[local]__[hash:base64:5]' },
-              importLoaders: 1,
-              sourceMap: true
+              sourceMap: true,
+              importLoaders: 1
             }
           },
           {loader: 'resolve-url-loader'},
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true }
-          }
+          {loader: 'sass-loader'}
         ]
       },
 
@@ -203,11 +192,8 @@ module.exports = merge(webpackBaseConfig, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development'
     }),
-    new MiniCssExtractPlugin({ // 分离css
-      filename: 'stylesheets/[name].[contenthash:5].css'
-    }),
     new HtmlWebpackPlugin({
-      template: join(__dirname, 'src/renderer/index.html'), // 引入模版
+      template: join(__dirname, 'src/renderer/template.html'), // 引入模版
       filename: 'index.html',
       minify: { // 对index.html压缩
           collapseWhitespace: false, // 去掉index.html的空格

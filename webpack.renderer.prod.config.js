@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = merge(webpackBaseConfig, {
   entry: {
-    index: './src/renderer/index.ts' // 入口文件
+    index: './src/renderer/app.ts' // 入口文件
   }, 
   mode: 'production',
   target: 'electron-preload',  
@@ -172,7 +172,7 @@ module.exports = merge(webpackBaseConfig, {
       filename: 'stylesheets/[name].[contenthash:5].css'
     }),
     new HtmlWebpackPlugin({
-      template: join(__dirname, 'src/renderer/index.html'), // 引入模版
+      template: join(__dirname, 'src/renderer/template.html'), // 引入模版
       filename: 'index.html',
       minify: { // 对index.html压缩
           collapseWhitespace: isProd, // 去掉index.html的空格
