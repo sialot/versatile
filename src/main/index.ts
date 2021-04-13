@@ -23,13 +23,14 @@ function createMainWindow() {
     //backgroundColor: '#252526',
     minWidth: 450,
     minHeight: 350,
-    width: 450,
-    height: 350
+    width: 1280,
+    height: 720,
+    frame: false
   });
   loadHtml(mainWindow, 'index');
   mainWindow.on('close', () => mainWindow = null);
   mainWindow.webContents.on('crashed', () => console.error('crash'));
-  mainWindow.webContents.openDevTools({mode:'detach'});
+  //mainWindow.webContents.openDevTools({mode:'detach'});
 }
 app.on('ready', () => { createMainWindow() });
 app.on('window-all-closed', () => {
