@@ -7,7 +7,8 @@ function loadHtml(window: BrowserWindow, name: string) {
     window.loadFile(path.resolve(__dirname, `../renderer/index.html`)).catch(console.error);
     return;
   }
-  // TODO development
+  // 开发模式
+  window.loadURL(`http://localhost:9999/dist/renderer/${name}.html`).catch(console.error);
 }
 
 let mainWindow: BrowserWindow | null = null;
@@ -28,6 +29,7 @@ function createMainWindow() {
   loadHtml(mainWindow, 'index');
   mainWindow.on('close', () => mainWindow = null);
   mainWindow.webContents.on('crashed', () => console.error('crash'));
+  mainWindow.webContents.openDevTools({mode:'detach'});
 }
 app.on('ready', () => { createMainWindow() });
 app.on('window-all-closed', () => {
