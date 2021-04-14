@@ -6,7 +6,7 @@ const webpackBaseConfig = require('./webpack.base.config');
 
 module.exports = merge(webpackBaseConfig, {
   mode: 'development', // 开发模式
-  target: 'node',
+  target: 'electron-main',
   entry: path.join(__dirname, 'src/main/index.ts'),
   output: {
     path: path.join(__dirname, 'dist/main'),

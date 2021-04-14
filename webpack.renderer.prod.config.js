@@ -16,12 +16,15 @@ module.exports = merge(webpackBaseConfig, {
     index: './src/renderer/app.ts' // 入口文件
   }, 
   mode: 'production',
-  target: 'electron-preload',  
+  target: 'electron-renderer',  
   output: {
     path: resolve(__dirname, 'dist/renderer/'),
     filename: isProd ? 'javascript/[name].[contenthash:5].js' : '[name].js', // [name] 是entry的key
     publicPath: isProd ? './' : '/'
-  },  
+  },
+  node: {
+    fs: 'empty'
+  },
   module: { 
     rules: [ 
 

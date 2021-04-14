@@ -9,6 +9,7 @@ module.exports = merge(webpackDevConfig, {
     path: path.join(__dirname, 'dist/main'),
     filename: 'main.prod.js' // 生产模式文件名为main.prod.js
   },
+  target: 'electron-main',
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production'

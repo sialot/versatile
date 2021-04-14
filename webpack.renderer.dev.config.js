@@ -55,7 +55,7 @@ module.exports = merge(webpackBaseConfig, {
     index: './src/renderer/app.ts' // 入口文件
   }, 
   mode: 'development',
-  target: 'web',   
+  target: 'electron-renderer',   
   output: { publicPath, filename: '[name].dev.js' },
   module: { 
     rules: [ 
