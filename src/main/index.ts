@@ -16,18 +16,20 @@ let mainWindow: BrowserWindow | null = null;
 // 创建窗口
 function createMainWindow() {
   if (mainWindow) return;
-  mainWindow = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true
-    },
+  mainWindow = new BrowserWindow({    
     minWidth: 450,
     minHeight: 350,
     width: 1280,
     height: 720,
     useContentSize: true,
-    frame: false
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
   });
   loadHtml(mainWindow, 'index');
+  mainWindow.webContents.openDevTools();
   mainWindow.on('close', () => mainWindow = null);
   mainWindow.webContents.on('crashed', () => console.error('crash'));
 }
