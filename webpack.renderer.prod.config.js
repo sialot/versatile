@@ -35,7 +35,8 @@ module.exports = merge(webpackBaseConfig, {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
-                        css: MiniCssExtractPlugin.loader
+                        css: MiniCssExtractPlugin.loader,
+                        ts: 'ts-loader'
                     },
                     preserveWhitespace: false // 不要留空白
                 }
