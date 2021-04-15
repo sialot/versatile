@@ -22,9 +22,6 @@ module.exports = merge(webpackBaseConfig, {
     filename: isProd ? 'javascript/[name].[contenthash:5].js' : '[name].js', // [name] 是entry的key
     publicPath: isProd ? './' : '/'
   },
-  node: {
-    fs: 'empty'
-  },
   module: { 
     rules: [ 
 
