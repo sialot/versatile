@@ -1,7 +1,7 @@
 <template>
-    <div :class="$style['ui-title-container']">
+    <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
-            todo_menu
+            文件 编辑
         </div>
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-middle']]">
             <span>{{title}}</span>
@@ -20,18 +20,41 @@ import Vue from "vue";
 import Component from "vue-class-component";
 const { ipcRenderer } = require('electron')
 
+interface WinEventProcessor {
+    [key:string]: ()=>void
+}
+
 @Component
 class TitleBar extends Vue {
     title:string = 'Versatile';
     maximized: boolean = false;
+    focus:boolean = true;
     created () {
 
         // 接收窗口事件
-        ipcRenderer.on('window-event', this._set_maximized_flag);
+        ipcRenderer.on('window-event', this._win_event_handler);
     }
-    _set_maximized_flag (event: Electron.IpcRendererEvent, flag: string){
-        this.maximized = (flag == 'maximize');
+
+    _win_event_handler (event: Electron.IpcRendererEvent, flag: string){
+
+        let p:WinEventProcessor = {
+            'maximize':() => {
+                this.maximized = true
+            },
+            'unmaximize':() => {
+                this.maximized = false
+            },
+            'blur':() => {
+                this.focus = false
+            },
+            'focus':() => {
+                this.focus = true
+            },
+        }
+
+        p[flag]();
     }
+
     _minimize_window () {
         ipcRenderer.send('title-bar-actions', 'min-app')
     }
@@ -64,7 +87,9 @@ export default TitleBar
     -webkit-flex-wrap: nowrap;
     flex-wrap: nowrap;
 }
-
+.ui-title-container-active {
+    background:$ui-global-win-border-active-color;
+}
 .ui-title-bar {
     -webkit-box-flex:1
 }

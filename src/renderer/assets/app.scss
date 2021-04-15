@@ -1,7 +1,10 @@
 @import "global.scss";
 body{
     background-color: $ui-global-bg-color;
-    font-size: 14px;
+    font-size: 16px;
+    font-family: Segoe WPC,Segoe UI,Microsoft YaHei,sans-serif;
     color: $ui-global-font-color;
+    -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
     margin:0px;
 }

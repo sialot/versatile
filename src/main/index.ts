@@ -60,6 +60,14 @@ function initUIActions() {
   mainWindow?.on('unmaximize', () => {
     mainWindow?.webContents.send('window-event','unmaximize');
   })
+  
+  // 窗口失焦、获焦
+  mainWindow?.on('blur', () => {
+    mainWindow?.webContents.send('window-event','blur');
+  })
+  mainWindow?.on('focus', () => {
+    mainWindow?.webContents.send('window-event','focus');
+  })
 }
 
 app.on('ready', () => { 
