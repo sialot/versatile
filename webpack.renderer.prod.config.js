@@ -48,7 +48,7 @@ module.exports = merge(webpackBaseConfig, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: { publicPath: './' }
+            options: { publicPath: '../' }
           },
           {
             loader: 'css-loader',
@@ -133,10 +133,16 @@ module.exports = merge(webpackBaseConfig, {
       // 处理字体文件 TTF
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: {
-          loader: 'url-loader',
-          options: {  limit: 10000, mimetype: 'application/octet-stream' }
-        }
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+                limit: 10000,
+                name:'[name].[hash:7].[ext]',
+                outputPath:"fonts/",
+            }
+         }
+        ]
       },
 
       // 处理字体文件 EOT
