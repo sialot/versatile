@@ -19,12 +19,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import titleMenu from "./title-menu.vue"
-const { ipcRenderer } = require('electron')
-
-// 定义时间处理接口
-interface WinEventProcessor {
-    [key:string]: ()=>void
-}
+import {CommonAPI, browserWindow} from "../public/CommonAPI"
 
 // 引入组件
 @Component({
@@ -43,42 +38,35 @@ class TitleBar extends Vue {
     created () {
 
         // 接收窗口事件
-        ipcRenderer.on('window-event', this._win_event_handler);
-    }
+        browserWindow.on(CommonAPI.WIN_EVENT.maximize, () => {
+            this.maximized = true
+        })
 
-    // 事件处理
-    _win_event_handler (event: Electron.IpcRendererEvent, flag: string){
+        browserWindow.on(CommonAPI.WIN_EVENT.unmaximize, () => {
+            this.maximized = false
+        })
 
-        let p:WinEventProcessor = {
-            'maximize':() => {
-                this.maximized = true
-            },
-            'unmaximize':() => {
-                this.maximized = false
-            },
-            'blur':() => {
-                this.focus = false
-            },
-            'focus':() => {
-                this.focus = true
-            },
-        }
+        browserWindow.on(CommonAPI.WIN_EVENT.blur, () => {
+            this.focus = false
+        })
 
-        p[flag]();
+        browserWindow.on(CommonAPI.WIN_EVENT.focus, () => {
+            this.focus = true
+        })
     }
 
     // 按钮方法
     _minimize_window () {
-        ipcRenderer.send('title-bar-actions', 'min-app')
+        browserWindow.minimize();
     }
     _maximize_window () {
-        ipcRenderer.send('title-bar-actions', 'max-app')
+        browserWindow.maximize();
     }
     _unmaximize_window() {
-        ipcRenderer.send('title-bar-actions', 'unmax-app')
+        browserWindow.unmaximize();
     }
     _close_window () {
-        ipcRenderer.send('title-bar-actions', 'close-app')
+        browserWindow.close();
     }
 }
 
