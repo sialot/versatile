@@ -1,7 +1,7 @@
 <template>
     <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
-            文件 编辑
+            <title-menu></title-menu>
         </div>
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-middle']]">
             <span>{{title}}</span>
@@ -18,23 +18,35 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import titleMenu from "./title-menu.vue"
 const { ipcRenderer } = require('electron')
 
+// 定义时间处理接口
 interface WinEventProcessor {
     [key:string]: ()=>void
 }
 
-@Component
+// 引入组件
+@Component({
+    components:{titleMenu}
+})
 class TitleBar extends Vue {
+
+    // 窗口标题
     title:string = 'Versatile';
+
+    // 是否最大化、是否窗口获焦
     maximized: boolean = false;
     focus:boolean = true;
+
+    // 组件创建后
     created () {
 
         // 接收窗口事件
         ipcRenderer.on('window-event', this._win_event_handler);
     }
 
+    // 事件处理
     _win_event_handler (event: Electron.IpcRendererEvent, flag: string){
 
         let p:WinEventProcessor = {
@@ -55,6 +67,7 @@ class TitleBar extends Vue {
         p[flag]();
     }
 
+    // 按钮方法
     _minimize_window () {
         ipcRenderer.send('title-bar-actions', 'min-app')
     }
@@ -96,7 +109,7 @@ export default TitleBar
 
 .ui-title-bar-left{
     text-align: left;
-    padding-left: 18px;
+    padding-left: 20px;
 }
 
 .ui-title-bar-middle{
