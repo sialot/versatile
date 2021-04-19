@@ -68,6 +68,11 @@ class TitleBar extends Vue {
     _close_window () {
         browserWindow.close();
     }
+
+    closeMenu(){
+   
+        
+    }
 }
 
 export default TitleBar
@@ -87,6 +92,10 @@ export default TitleBar
     display: -webkit-box;
     -webkit-flex-wrap: nowrap;
     flex-wrap: nowrap;
+    div {
+        -webkit-user-select:none;
+        user-select:none;
+    }
 }
 .ui-title-container-active {
     background:$ui-global-win-border-active-color;
@@ -119,8 +128,6 @@ export default TitleBar
     vertical-align: middle;
     -webkit-app-region: no-drag;
     width: 46px;
-    -webkit-user-select:none;
-    user-select:none;
 }
 .ui-title-btn:hover{
     background-color:$ui-base-button-color-hover;

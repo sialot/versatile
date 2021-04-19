@@ -1,30 +1,20 @@
 <template>
     <div :class="$style['menu-container']">
-        <div>
-            <div :class="$style['menu-title']">文件</div>
-            <div :class="$style['menu-item']">
+        <div v-for="(data, i) in menuList" :key="i">
+            <div v-if="!(currentActiveIndex == i)" :class="$style['menu-title']"  @click="_showTitle(i)">{{data.title}}</div>
+            <div v-if="(currentActiveIndex == i)" :class="[$style['menu-title'], $style['menu-title-active']]"  @click="_showTitle(i)">{{data.title}}</div>
+            <div v-show="(currentActiveIndex == i)" :class="$style['menu-item']">
                 <ul>
-                    <li>
+                    <li v-for="(item, j) in data.items" :key="j" @click="_onClick(i,j)">
                         <div :class="$style['menu-item-text']">
-                            <span class="">新建</span>
+                            <span class="">{{item.text}}</span>
                         </div>
                         <div :class="$style['menu-item-shortcut']">
-                            <span>Ctrl+N</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div :class="$style['menu-item-text']">
-                            <span class="">新建1</span>
-                        </div>
-                        <div :class="$style['menu-item-shortcut']">
-                            <span>Ctrl+N</span>
+                            <span>{{item.shortcut}}</span>
                         </div>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div>
-            <div :class="$style['menu-title']">帮助</div>            
         </div>
     </div>
 </template>
@@ -33,9 +23,83 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
+interface MenuItem{
+    text:string,
+    shortcut:string,
+    onClick:() => void
+}
+interface MenuData{
+    title:string,
+    items:MenuItem[]
+}
+
 @Component
 export default class TitleMenu extends Vue {
-   menutest:string = "运行任务 !"
+    currentActiveIndex:number = -1;
+    isMeClick:boolean = false;
+    menutest:string = "运行任务 !"
+    menuList:MenuData[] = [{
+        title:"文件",
+        items:[
+        {
+            text:"保存",
+            shortcut:"Ctrl+S",
+            onClick: function ():void{
+                console.log(this.text)
+            }
+        },{
+            text:"退出",
+            shortcut:"",
+            onClick: function ():void{
+                console.log(this.text)
+            }
+        }]
+    },
+    {
+        title:"帮助",
+        items:[
+        {
+            text:"开发人员工具",
+            shortcut:"Ctrl+Shift+I",
+            onClick: function ():void{
+                console.log(this.text)
+            }
+        },{
+            text:"关于",
+            shortcut:"",
+            onClick: function ():void{
+                console.log(this.text)
+            }
+        }]
+    }];
+  mounted(){
+      this.$globalClick(this.closeAll.bind(this));
+  }
+    // 菜单标题单击
+    _showTitle(menuInex:number){
+        this.isMeClick = true;
+        if(this.currentActiveIndex == menuInex){
+            this.currentActiveIndex = -1;
+        }else{
+            this.currentActiveIndex = menuInex
+        }
+    }
+
+    // 菜单项单击
+    _onClick(menuIndex:number, itemIndex:number):void{
+        this.isMeClick = true;
+        this.menuList[menuIndex].items[itemIndex].onClick();
+    }
+
+    // 关闭所有菜单
+    closeAll():void{
+
+        if(this.isMeClick){
+            this.isMeClick = false;
+            return
+        }
+        this.currentActiveIndex = -1;
+    }
 }
 
 </script>
@@ -52,10 +116,17 @@ export default class TitleMenu extends Vue {
 .menu-title{
     padding: 0px 12px;
     height: 100%;
+    min-width: 46px;
+    text-align: center;
     -webkit-app-region: no-drag;
     -webkit-user-select:none;
     user-select:none;
 }
+
+.menu-title-active{
+    background-color: $ui-base-button-color-hover;
+}
+
 .menu-title:hover{
     background-color: $ui-base-button-color-hover;
 }
