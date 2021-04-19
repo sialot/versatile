@@ -1,7 +1,7 @@
 <template>
     <div :class="$style['menu-container']">
         <div v-for="(data, i) in menuList" :key="i">
-            <div v-if="!(currentActiveIndex == i)" :class="$style['menu-title']"  @click="_showTitle(i)">{{data.title}}</div>
+            <div v-if="!(currentActiveIndex == i)" :class="$style['menu-title']" @mouseover="_overTitle(i)"  @click="_showTitle(i)">{{data.title}}</div>
             <div v-if="(currentActiveIndex == i)" :class="[$style['menu-title'], $style['menu-title-active']]"  @click="_showTitle(i)">{{data.title}}</div>
             <div v-show="(currentActiveIndex == i)" :class="$style['menu-item']">
                 <ul>
@@ -72,12 +72,31 @@ export default class TitleMenu extends Vue {
             }
         }]
     }];
-  mounted(){
-      this.$globalClick(this.closeAll.bind(this));
-  }
+
+    mounted(){
+
+        // 注册全局单击关闭菜单
+        this.$globalClick(this.closeAll.bind(this));
+    }
+
+    // 菜单标题mouseover
+    _overTitle(menuInex:number){
+
+        // 未展开忽略事件
+        if(this.currentActiveIndex == -1) {
+            return;
+        }
+
+        this.currentActiveIndex = menuInex
+    }
+
     // 菜单标题单击
     _showTitle(menuInex:number){
+
+        // 是我的单击事件，用于屏蔽全局单击事件
         this.isMeClick = true;
+
+        // 展开或关闭
         if(this.currentActiveIndex == menuInex){
             this.currentActiveIndex = -1;
         }else{
@@ -87,6 +106,8 @@ export default class TitleMenu extends Vue {
 
     // 菜单项单击
     _onClick(menuIndex:number, itemIndex:number):void{
+
+        // 是我的单击事件，用于屏蔽全局单击事件
         this.isMeClick = true;
         this.menuList[menuIndex].items[itemIndex].onClick();
     }
@@ -94,6 +115,7 @@ export default class TitleMenu extends Vue {
     // 关闭所有菜单
     closeAll():void{
 
+        // 是我的单击事件，屏蔽全局单击事件
         if(this.isMeClick){
             this.isMeClick = false;
             return
@@ -141,7 +163,7 @@ export default class TitleMenu extends Vue {
         padding:0px;
         li {
             display: -webkit-box;
-            margin:4px 0px;
+            margin:1px 0px;
             padding:4px 24px;
             div {
                 display: flex;
