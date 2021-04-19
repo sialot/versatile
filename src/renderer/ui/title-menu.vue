@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {browserWindow} from "../public/CommonAPI"
+import {browserWindow, CommonAPI} from "../public/CommonAPI"
 
 interface MenuItem{
     text:string,
@@ -73,6 +73,14 @@ export default class TitleMenu extends Vue {
             }
         }]
     }];
+
+    // 组件创建后
+    created () {
+
+        browserWindow.on(CommonAPI.WIN_EVENT.blur, () => {
+            this.closeAll();
+        })
+    }
 
     mounted(){
 
@@ -159,6 +167,7 @@ export default class TitleMenu extends Vue {
     background-color: $ui-base-button-color-hover;
 }
 .menu-item{
+    z-index: 999;
     position: absolute;
     min-width: 200px;
     background: $ui-global-panel-bg-dark-color;    
