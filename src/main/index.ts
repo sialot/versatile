@@ -1,5 +1,5 @@
 import { BrowserWindow, app, ipcMain} from 'electron';
-import titleBar from "./ui/TitleBar"
+import windowAPI from "./ipc/windowAPI"
 import path from "path";
 
 // 加载html，目前只对生产模式进行加载
@@ -32,28 +32,22 @@ function createMainWindow() {
   });
   
   loadHtml(mainWindow, 'index');
-  mainWindow.webContents.openDevTools();
-  mainWindow.on('close', () => {    
-    console.log('closing window!');
-    mainWindow = null;
-    return true
-  });
-  mainWindow.webContents.on('crashed', () => console.error('crash'));
 }
 
-// 初始化ui组件
-function initUIActions() {
+// 初始化ipc通讯
+function initIpc(){
 
-  // 标题栏按钮实现
-  ipcMain.on('title-bar-actions', (event, action:string) => {
-    console.log("mainWindow "+ mainWindow)
-    console.log("action "+ action)
+  ipcMain.on('windowAPI', (event, action:string) => {
     if(mainWindow) {
-      titleBar.doActions(mainWindow, action);
+      windowAPI.callAPI(mainWindow, action);
     }
   })
+}
 
-  // 最大化最小化时间通知
+// 初始化窗口事件
+function initEvents() {
+
+  // 最大化最小化事件通知
   mainWindow?.on('maximize', () => {
     mainWindow?.webContents.send('window-event','maximize');
   })
@@ -68,11 +62,19 @@ function initUIActions() {
   mainWindow?.on('focus', () => {
     mainWindow?.webContents.send('window-event','focus');
   })
+  
+  mainWindow?.on('close', () => {    
+    console.log('closing window!');
+    mainWindow = null;
+    return true
+  });
+  mainWindow?.webContents.on('crashed', () => console.error('crash'));
 }
 
 app.on('ready', () => { 
   createMainWindow();
-  initUIActions();
+  initIpc();
+  initEvents();
 });
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

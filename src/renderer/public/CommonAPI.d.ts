@@ -54,6 +54,7 @@ declare namespace BrowserWindow {
         unmaximize(): void;
         minimize(): void;
         close(): void;
+        openDevTools(): void;
     }
     export {};
 }

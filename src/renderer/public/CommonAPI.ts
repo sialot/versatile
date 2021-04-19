@@ -122,22 +122,27 @@ namespace BrowserWindow {
 
         // 最大化
         public maximize():void{
-            ipcConnector.send('title-bar-actions', 'max-app');
+            ipcConnector.send('windowAPI', 'maximize');
         }
     
         // 最大化还原
         public unmaximize():void{
-            ipcConnector.send('title-bar-actions', 'unmax-app');
+            ipcConnector.send('windowAPI', 'unmaximize');
         }
     
         // 最小化
         public minimize():void{
-            ipcConnector.send('title-bar-actions', 'min-app');
+            ipcConnector.send('windowAPI', 'minimize');
         }
     
         // 关闭
         public close():void{
-            ipcConnector.send('title-bar-actions', 'close-app');
+            ipcConnector.send('windowAPI', 'close');
+        }
+
+        // 打开调试工具
+        public openDevTools():void{
+            ipcConnector.send('windowAPI','webContents.openDevTools');
         }
     }
 }

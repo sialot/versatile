@@ -22,6 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import {browserWindow} from "../public/CommonAPI"
 
 interface MenuItem{
     text:string,
@@ -51,7 +52,7 @@ export default class TitleMenu extends Vue {
             text:"退出",
             shortcut:"",
             onClick: function ():void{
-                console.log(this.text)
+                browserWindow.close();
             }
         }]
     },
@@ -60,9 +61,9 @@ export default class TitleMenu extends Vue {
         items:[
         {
             text:"开发人员工具",
-            shortcut:"Ctrl+Shift+I",
+            shortcut:"",
             onClick: function ():void{
-                console.log(this.text)
+                browserWindow.openDevTools();
             }
         },{
             text:"关于",
@@ -79,11 +80,15 @@ export default class TitleMenu extends Vue {
         this.$globalClick(this.closeAll.bind(this));
     }
 
+    _isClosed():boolean{
+        return this.currentActiveIndex == -1
+    }
+
     // 菜单标题mouseover
-    _overTitle(menuInex:number){
+    _overTitle(menuInex:number):void{
 
         // 未展开忽略事件
-        if(this.currentActiveIndex == -1) {
+        if(this._isClosed()) {
             return;
         }
 
@@ -91,14 +96,14 @@ export default class TitleMenu extends Vue {
     }
 
     // 菜单标题单击
-    _showTitle(menuInex:number){
+    _showTitle(menuInex:number):void{
 
         // 是我的单击事件，用于屏蔽全局单击事件
         this.isMeClick = true;
 
         // 展开或关闭
         if(this.currentActiveIndex == menuInex){
-            this.currentActiveIndex = -1;
+            this.closeAll();
         }else{
             this.currentActiveIndex = menuInex
         }
@@ -110,6 +115,7 @@ export default class TitleMenu extends Vue {
         // 是我的单击事件，用于屏蔽全局单击事件
         this.isMeClick = true;
         this.menuList[menuIndex].items[itemIndex].onClick();
+        this.closeAll();
     }
 
     // 关闭所有菜单
