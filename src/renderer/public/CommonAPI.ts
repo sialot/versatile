@@ -110,8 +110,6 @@ namespace BrowserWindow {
                 this.eventListenerMap[event] = new Array()
             }
             this.eventListenerMap[event].push(func)
-
-            console.log(this.eventListenerMap);
         }
 
         // 执行监听事件
