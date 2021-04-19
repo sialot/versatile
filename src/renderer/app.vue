@@ -1,6 +1,7 @@
 <template>
   <div id="main">
     <title-bar></title-bar>
+    <router-view></router-view> 
   </div>
 </template>
 

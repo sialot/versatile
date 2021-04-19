@@ -2,8 +2,8 @@ import Vue from "vue";
 declare class TitleBar extends Vue {
     title: string;
     maximized: boolean;
+    focus: boolean;
     created(): void;
-    _set_maximized_flag(event: Electron.IpcRendererEvent, flag: string): void;
     _minimize_window(): void;
     _maximize_window(): void;
     _unmaximize_window(): void;
