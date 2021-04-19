@@ -135,6 +135,7 @@ export default class TitleMenu extends Vue {
 <style module lang="scss">
 @import "../assets/global";
 .menu-container{
+    font-size:$ui-gloabl-menu-font-size;
     display: flex;
     flex-direction: row;
     -webkit-flex-direction: row;
@@ -142,9 +143,8 @@ export default class TitleMenu extends Vue {
     flex-wrap: nowrap;
 }
 .menu-title{
-    padding: 0px 12px;
+    padding: 0px 8px;
     height: 100%;
-    min-width: 46px;
     text-align: center;
     -webkit-app-region: no-drag;
     -webkit-user-select:none;

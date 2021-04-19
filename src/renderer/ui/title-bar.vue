@@ -1,6 +1,7 @@
 <template>
     <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
+            <a :class="[$style['app-icon']]"></a>
             <title-menu></title-menu>
         </div>
         <div :class="[$style['ui-title-bar'], $style['ui-title-bar-middle']]">
@@ -68,11 +69,6 @@ class TitleBar extends Vue {
     _close_window () {
         browserWindow.close();
     }
-
-    closeMenu(){
-   
-        
-    }
 }
 
 export default TitleBar
@@ -81,6 +77,14 @@ export default TitleBar
 
 <style module lang="scss">
 @import "../assets/global";
+
+.app-icon{
+    height: 100%;
+    width: 35px;
+    background-image: url("../../../resources/icon/icon.png");
+    background-size: 30px 30px;
+    background-position: 50%;
+}
 
 .ui-title-container {
     background:$ui-global-win-border-color;
@@ -105,8 +109,8 @@ export default TitleBar
 }
 
 .ui-title-bar-left{
+    display: flex;
     text-align: left;
-    padding-left: 20px;
 }
 
 .ui-title-bar-middle{
