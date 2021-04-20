@@ -15,10 +15,17 @@ body{
     position: absolute;
 }
 
+// ---- 面板 -----
+
 .ui-pannel{
+    z-index:100;
     position: absolute;
     width:100px;
     height:100px;
     //border: 1px solid #fff;
     background-color: $ui-global-panel-bg-color;
+}
+
+.ui-pannel-active{   
+    z-index: 500;
 }
