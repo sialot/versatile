@@ -1,17 +1,20 @@
 <template>
-    <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
-        <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
-            <a :class="[$style['app-icon']]"></a>
-            <title-menu></title-menu>
-        </div>
-        <div :class="[$style['ui-title-bar'], $style['ui-title-bar-middle']]">
-            <span>{{title}}</span>
-        </div>
-        <div :class="[$style['ui-title-bar'], $style['ui-title-bar-right']]">
-            <div :class="['codicon', 'codicon-chrome-close', $style['ui-title-btn'], $style['ui-btn-close']]" @click="_close_window()"></div>
-            <div v-if="!maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-maximize']" @click="_maximize_window()"></div>
-            <div v-if="maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-restore']" @click="_unmaximize_window()"></div>
-            <div :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-minimize']" @click="_minimize_window()"></div>
+    <div>
+        <div :class="{[$style['ui-title-resizer-active']]:focus, [$style['ui-title-resizer']]:true}" aria-hidden="true"></div>
+        <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
+            <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
+                <a :class="[$style['app-icon']]"></a>
+                <title-menu></title-menu>
+            </div>
+            <div :class="[$style['ui-title-bar'], $style['ui-title-bar-middle']]">
+                <span>{{title}}</span>
+            </div>
+            <div :class="[$style['ui-title-bar'], $style['ui-title-bar-right']]">
+                <div :class="['codicon', 'codicon-chrome-close', $style['ui-title-btn'], $style['ui-btn-close']]" @click="_close_window()"></div>
+                <div v-if="!maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-maximize']" @click="_maximize_window()"></div>
+                <div v-if="maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-restore']" @click="_unmaximize_window()"></div>
+                <div :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-minimize']" @click="_minimize_window()"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -85,6 +88,16 @@ export default TitleBar
     background-size: 30px 30px;
     background-position: 50%;
 }
+.ui-title-resizer{
+    background:$ui-global-win-border-color;
+    height: 2px;
+    width: 100%;
+    -webkit-app-region: no-drag;
+}
+
+.ui-title-resizer-active{
+    background:$ui-global-win-border-active-color;
+}
 
 .ui-title-container {
     background:$ui-global-win-border-color;
@@ -100,6 +113,7 @@ export default TitleBar
         -webkit-user-select:none;
         user-select:none;
     }
+    padding-bottom: 2px;
 }
 .ui-title-container-active {
     background:$ui-global-win-border-active-color;
