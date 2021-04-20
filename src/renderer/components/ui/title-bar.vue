@@ -23,7 +23,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import titleMenu from "./title-menu.vue"
-import {CommonAPI, browserWindow} from "../public/CommonAPI"
+import {CommonAPI, browserWindow} from "@/public/CommonAPI"
 
 // 引入组件
 @Component({
@@ -79,12 +79,12 @@ export default TitleBar
 </script>
 
 <style module lang="scss">
-@import "../assets/global";
+@import "@/assets/global";
 
 .app-icon{
     height: 100%;
     width: 35px;
-    background-image: url("../../../resources/icon/icon.png");
+    background-image: url("~resources/icon/icon.png");
     background-size: 30px 30px;
     background-position: 50%;
 }

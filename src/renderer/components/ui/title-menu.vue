@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {browserWindow, CommonAPI} from "../public/CommonAPI"
+import {browserWindow, CommonAPI} from "@/public/CommonAPI"
 
 interface MenuItem{
     text:string,
@@ -141,7 +141,7 @@ export default class TitleMenu extends Vue {
 </script>
 
 <style module lang="scss">
-@import "../assets/global";
+@import "@/assets/global";
 .menu-container{
     font-size:$ui-gloabl-menu-font-size;
     display: flex;

@@ -22,7 +22,7 @@ export default class MainView extends Vue {
 </script>
 
 <style module lang="scss">
-@import "../assets/global";
+@import "@/assets/global";
 .container{
     -webkit-user-select:none;
     user-select:none;

@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import titleBar from './ui/title-bar.vue'
+import titleBar from '@/components/ui/title-bar.vue'
 export default {
   components: { titleBar },
   name: "App"
