@@ -2,6 +2,7 @@ import '@/assets/vscode-codicons/codicon.global.css';
 import '@/assets/app.global.scss';
 import Vue from 'vue';
 import router from '@/router';
+import store from '@/store'
 import App from '@/app.vue';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -22,6 +23,7 @@ Vue.prototype.$globalClick = function (callback:()=>void) {
 };
 new Vue({
     router,
+    store,
     render: (h) => h(App)
 }).$mount('#app');
 

@@ -38,7 +38,6 @@ interface MenuData{
 export default class TitleMenu extends Vue {
     currentActiveIndex:number = -1;
     isMeClick:boolean = false;
-    menutest:string = "运行任务 !"
     menuList:MenuData[] = [{
         title:"文件",
         items:[

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div :class="{[$style['ui-title-resizer-active']]:focus, [$style['ui-title-resizer']]:true}" aria-hidden="true"></div>
-        <div :class="{[$style['ui-title-container-active']]:focus, [$style['ui-title-container']]:true}">
+        <div :class="{[$style['ui-title-resizer-active']]:isWindowFocus, [$style['ui-title-resizer']]:true}" aria-hidden="true"></div>
+        <div :class="{[$style['ui-title-container-active']]:isWindowFocus, [$style['ui-title-container']]:true}">
             <div :class="[$style['ui-title-bar'], $style['ui-title-bar-left']]">
                 <a :class="[$style['app-icon']]"></a>
                 <title-menu></title-menu>
@@ -11,8 +11,8 @@
             </div>
             <div :class="[$style['ui-title-bar'], $style['ui-title-bar-right']]">
                 <div :class="['codicon', 'codicon-chrome-close', $style['ui-title-btn'], $style['ui-btn-close']]" @click="_close_window()"></div>
-                <div v-if="!maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-maximize']" @click="_maximize_window()"></div>
-                <div v-if="maximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-restore']" @click="_unmaximize_window()"></div>
+                <div v-if="!isMaximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-maximize']" @click="_maximize_window()"></div>
+                <div v-if="isMaximized" :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-restore']" @click="_unmaximize_window()"></div>
                 <div :class="[$style['ui-title-btn'], 'codicon', 'codicon-chrome-minimize']" @click="_minimize_window()"></div>
             </div>
         </div>
@@ -23,7 +23,8 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import titleMenu from "./title-menu.vue"
-import {CommonAPI, browserWindow} from "@/public/CommonAPI"
+import { Getter } from 'vuex-class'
+import { browserWindow } from "@/public/CommonAPI"
 
 // 引入组件
 @Component({
@@ -32,32 +33,11 @@ import {CommonAPI, browserWindow} from "@/public/CommonAPI"
 class TitleBar extends Vue {
 
     // 窗口标题
-    title:string = 'Versatile';
+    @Getter('title') public title!:string;
 
     // 是否最大化、是否窗口获焦
-    maximized: boolean = false;
-    focus:boolean = true;
-
-    // 组件创建后
-    created () {
-
-        // 接收窗口事件
-        browserWindow.on(CommonAPI.WIN_EVENT.maximize, () => {
-            this.maximized = true
-        })
-
-        browserWindow.on(CommonAPI.WIN_EVENT.unmaximize, () => {
-            this.maximized = false
-        })
-
-        browserWindow.on(CommonAPI.WIN_EVENT.blur, () => {
-            this.focus = false
-        })
-
-        browserWindow.on(CommonAPI.WIN_EVENT.focus, () => {
-            this.focus = true
-        })
-    }
+    @Getter('isMaximized') public isMaximized!:string;
+    @Getter('isWindowFocus') public isWindowFocus!:string;
 
     // 按钮方法
     _minimize_window () {
