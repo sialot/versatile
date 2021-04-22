@@ -22,9 +22,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import titleMenu from "./title-menu.vue"
+import titleMenu from "@/components/ui/title-menu.vue"
 import { Getter } from 'vuex-class'
-import { browserWindow } from "@/public/CommonAPI"
+import { browserWindow } from "@/core/api/CommonAPI"
 
 // 引入组件
 @Component({

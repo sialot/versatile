@@ -1,9 +1,10 @@
 <template>
     <div :class="$style['container']">
-       this the main-view
-            <pre>
-{{globalState}}
-            </pre>
+        this is the main-view
+
+        <div v-for="(pannel) in pannelList" :key="pannel.ID">
+            <pannel-link :ID="pannel.ID"></pannel-link>
+        </div>
     </div>
 </template>
 
@@ -11,12 +12,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Getter } from 'vuex-class'
-import { State } from '@/store/index'
+import { UIPannel } from '@/core/pannel/PannelManager'
+import pannelLink from '@/components/pannel/pannel-link.vue'
 
-@Component
+@Component({
+    components:{pannelLink}
+})
 export default class MainView extends Vue {
-
-    @Getter('globalState') globalState!:State
+    @Getter('pannelList') pannelList!:UIPannel[];
 }
 
 </script>
@@ -26,9 +29,7 @@ export default class MainView extends Vue {
 .container{
     -webkit-user-select:none;
     user-select:none;
-    pre{
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    position:relative;
 }
 
 </style>

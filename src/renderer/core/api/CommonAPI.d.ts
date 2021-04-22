@@ -1,4 +1,4 @@
-declare namespace CommonAPI {
+declare namespace types {
     enum WIN_EVENT {
         maximize = "maximize",
         unmaximize = "unmaximize",
@@ -48,7 +48,7 @@ declare namespace BrowserWindow {
     export class API {
         eventListenerMap: EventListenerMap;
         constructor();
-        on(event: CommonAPI.WIN_EVENT, func: () => void): void;
+        on(event: types.WIN_EVENT, func: () => void): void;
         private _eventListener;
         maximize(): void;
         unmaximize(): void;
@@ -59,5 +59,5 @@ declare namespace BrowserWindow {
     export {};
 }
 declare const browserWindow: BrowserWindow.API;
-export { ipcConnector, browserWindow, CommonAPI };
+export { ipcConnector, browserWindow, types };
 //# sourceMappingURL=CommonAPI.d.ts.map

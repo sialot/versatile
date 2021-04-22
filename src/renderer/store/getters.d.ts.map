@@ -1,1 +1,1 @@
-{"version":3,"file":"getters.d.ts","sourceRoot":"","sources":["getters.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,EAAE,UAAU,EAAU,MAAM,MAAM,CAAA;AACzC,OAAO,EAAE,KAAK,EAAE,MAAM,eAAe,CAAA;AAuBrC,QAAA,MAAM,UAAU,EAAE,UAAU,CAAC,KAAK,EAAE,GAAG,CAKtC,CAAA;AAED,eAAe,UAAU,CAAA"}
+{"version":3,"file":"getters.d.ts","sourceRoot":"","sources":["getters.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,EAAE,UAAU,EAAU,MAAM,MAAM,CAAA;AACzC,OAAO,EAAE,KAAK,EAAE,MAAM,eAAe,CAAA;AA0CrC,QAAA,MAAM,UAAU,EAAE,UAAU,CAAC,KAAK,EAAE,GAAG,CAMtC,CAAA;AAED,eAAe,UAAU,CAAA"}

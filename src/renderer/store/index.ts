@@ -4,6 +4,7 @@ import actions from '@/store/actions'
 import getters from '@/store/getters'
 import mutations from '@/store/mutations'
 import dataViewer from '@/store/modules/data-viewer'
+import {UIPannel, pannelManager} from '@/core/pannel/PannelManager'
 
 Vue.use(Vuex)
 
@@ -18,13 +19,17 @@ export interface State {
 
   // 是否为当前激活窗口
   isWindowFocus:boolean
+
+  // 面板数据存储
+  pannelList:UIPannel[]
 }
 
 // state 数据初始化
 const initState: State = {
   title: 'Versatile',
   isMaximized: false,
-  isWindowFocus: true
+  isWindowFocus: true,
+  pannelList:pannelManager.loadPannels()
 }
 
 export default new Vuex.Store({

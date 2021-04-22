@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {browserWindow, CommonAPI} from "@/public/CommonAPI"
+import {browserWindow, types} from "@/core/api/CommonAPI"
 
 interface MenuItem{
     text:string,
@@ -76,7 +76,7 @@ export default class TitleMenu extends Vue {
     // 组件创建后
     created () {
 
-        browserWindow.on(CommonAPI.WIN_EVENT.blur, () => {
+        browserWindow.on(types.WIN_EVENT.blur, () => {
             this.closeAll();
         })
     }

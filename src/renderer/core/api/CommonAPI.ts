@@ -4,7 +4,7 @@
 const { ipcRenderer } = require('electron')
 
 // 通用方法
-namespace CommonAPI{
+namespace types{
     export enum WIN_EVENT {
         maximize = 'maximize',
         unmaximize = 'unmaximize',
@@ -105,7 +105,7 @@ namespace BrowserWindow {
         }
 
         // 注册事件监听    
-        public on(event: CommonAPI.WIN_EVENT, func:()=>void):void{
+        public on(event: types.WIN_EVENT, func:()=>void):void{
             if(!(event in this.eventListenerMap)){
                 this.eventListenerMap[event] = new Array()
             }
@@ -151,5 +151,5 @@ const browserWindow = new BrowserWindow.API();
 export {
     ipcConnector,
     browserWindow,
-    CommonAPI
+    types
 }
