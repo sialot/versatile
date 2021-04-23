@@ -11,13 +11,13 @@ Vue.config.productionTip = isProd;
 
 declare module 'vue/types/vue' {
     interface Vue {
-        $globalClick: (func:()=>void)=>void
+        $globalMouseDown: (func:()=>void)=>void
     }
 }
 
 // 定义全局点击函数
-Vue.prototype.$globalClick = function (callback:()=>void) {
-    document.getElementById('main')!.onclick = function () {
+Vue.prototype.$globalMouseDown = function (callback:()=>void) {
+    document.getElementById('main')!.onmousedown = function () {
         callback();
     };
 };

@@ -1,7 +1,7 @@
 <template>
     <div :class="$style['menu-container']">
         <div v-for="(data, i) in menuList" :key="i">
-            <div v-if="!(currentActiveIndex == i)" :class="$style['menu-title']" @mouseover="_overTitle(i)"  @click="_showTitle(i)">{{data.title}}</div>
+            <div v-if="!(currentActiveIndex == i)" :class="$style['menu-title']" @mouseover="_overTitle(i)"  @mousedown="_showTitle(i)">{{data.title}}</div>
             <div v-if="(currentActiveIndex == i)" :class="[$style['menu-title'], $style['menu-title-active']]"  @click="_showTitle(i)">{{data.title}}</div>
             <div v-show="(currentActiveIndex == i)" :class="$style['menu-item']">
                 <ul>
@@ -84,7 +84,7 @@ export default class TitleMenu extends Vue {
     mounted(){
 
         // 注册全局单击关闭菜单
-        this.$globalClick(this.closeAll.bind(this));
+        this.$globalMouseDown(this.closeAll.bind(this));
     }
 
     _isClosed():boolean{
