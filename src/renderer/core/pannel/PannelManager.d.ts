@@ -1,9 +1,22 @@
 /**
+ * 面板位置模式
+ */
+declare enum POSITON_MODE {
+    FLOAT = 0,
+    LEFT = 1,
+    LEFT_MIDDLE = 2,
+    BUTTON = 3,
+    TOP = 4,
+    RIGHT = 5,
+    RIGHT_MIDDLE = 6
+}
+/**
  * 面板
  */
 export declare class UIPannel {
     ID: string;
     type: string;
+    positionMode: POSITON_MODE;
     title: string;
     isShow: boolean;
     width: number;
@@ -22,6 +35,7 @@ declare class PannelManager {
      * @returns 面板数组
      */
     loadPannels(): UIPannel[];
+    private loadCustomerPannelInfo;
 }
 declare let pannelManager: PannelManager;
 export { pannelManager };
